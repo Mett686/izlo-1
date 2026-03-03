@@ -113,26 +113,23 @@ void all_streets_max_one_day_of_first_phase_roadwork(CNF *formula, unsigned num_
     // For each street
     for(unsigned street_idx = 0; street_idx < num_of_streets; street_idx++) {
         
-        unsigned long weight = 2;
-        unsigned long combinations = 2<<num_of_days;
-
-        for(unsigned long i = 0; i < combinations; i++) {
-            Clause* clause = create_new_clause(formula);
+        unsigned long count = 2<<(num_of_days -1);
+        unsigned long weight = 1;
+        
+        // For all possible day combinations
+        for(unsigned long i = 1; i < count; i++) {
             
+            // Create clause if there more than 1 day
             if(i == weight) {
                 weight += weight;
             } else {
+                Clause* clause = create_new_clause(formula);
                 for(unsigned day = 0; day < num_of_days; day++) {
                     bool evaluation = !((i>>day)%2);
-                    putchar(evaluation);
                     add_literal_to_clause(clause, evaluation, FIRST_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, day);
                 }
-                putchar('\n');
             }
         }
-        
-        
-
     }
 
 }
@@ -148,6 +145,8 @@ void all_streets_max_one_day_of_first_phase_roadwork(CNF *formula, unsigned num_
 void second_phase_follows_first_immediately(CNF *formula, unsigned num_of_days, unsigned num_of_crossroads, unsigned num_of_streets, const NeighbourLists *neighbours, const Street *streets) {
 
     // Místo pro řešení úlohy
+
+    
 
 }
 
