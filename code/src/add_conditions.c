@@ -5,7 +5,7 @@
 #include "parse.h"
 
 //
-// LOGIN: <ZDE VLOŽTE SVŮJ LOGIN>
+// LOGIN: xknotem00
 //
 
 /** Funkce demonstrující vytvoření nové (arbitrárně vybrané) klauzule
@@ -109,6 +109,31 @@ void all_streets_min_one_day_of_first_phase_roadwork(CNF *formula, unsigned num_
 void all_streets_max_one_day_of_first_phase_roadwork(CNF *formula, unsigned num_of_days, unsigned num_of_crossroads, unsigned num_of_streets, const NeighbourLists *neighbours, const Street *streets) {
 
     // Místo pro řešení úlohy
+
+    // For each street
+    for(unsigned street_idx = 0; street_idx < num_of_streets; street_idx++) {
+        
+        unsigned long weight = 2;
+        unsigned long combinations = 2<<num_of_days;
+
+        for(unsigned long i = 0; i < combinations; i++) {
+            Clause* clause = create_new_clause(formula);
+            
+            if(i == weight) {
+                weight += weight;
+            } else {
+                for(unsigned day = 0; day < num_of_days; day++) {
+                    bool evaluation = !((i>>day)%2);
+                    putchar(evaluation);
+                    add_literal_to_clause(clause, evaluation, FIRST_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, day);
+                }
+                putchar('\n');
+            }
+        }
+        
+        
+
+    }
 
 }
 
