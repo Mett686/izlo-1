@@ -121,7 +121,6 @@ void all_streets_max_one_day_of_first_phase_roadwork(CNF *formula, unsigned num_
             }
         }
     }
-
 }
 
 /** Funkce vytvářející klauzule ošetřující podmínku 3 ze zadání
@@ -137,15 +136,19 @@ void second_phase_follows_first_immediately(CNF *formula, unsigned num_of_days, 
     // For each street
     for(unsigned street_idx = 0; street_idx < num_of_streets; street_idx++) {
         // Generate clauses for all days
+        Clause* clause = create_new_clause(formula);
+        add_literal_to_clause(clause, false, SECOND_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, 0);
+        clause = create_new_clause(formula);
+        add_literal_to_clause(clause, false, FIRST_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, num_of_days-1);
         for(unsigned day = 0; day < num_of_days -1; day++) {
             // (not A or B on the next) and
-            Clause* clause = create_new_clause(formula);
+            clause = create_new_clause(formula);
             add_literal_to_clause(clause, false, FIRST_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, day);
             add_literal_to_clause(clause, true, SECOND_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, day+1);
             // (not B on the next or A)
             clause = create_new_clause(formula);
-            add_literal_to_clause(clause, false, SECOND_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, day+1);
             add_literal_to_clause(clause, true, FIRST_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, day);
+            add_literal_to_clause(clause, false, SECOND_PHASE_FLAG, streets[street_idx].source, streets[street_idx].destination, day+1);
         }
     }    
 
@@ -203,7 +206,7 @@ void neighbour_streets_not_being_repaired_simultaneously(CNF *formula, unsigned 
 void each_day_at_least_one_street_being_repaired(CNF *formula, unsigned num_of_days, unsigned num_of_crossroads, unsigned num_of_streets, const NeighbourLists *neighbours, const Street *streets) {
 
     // For each day
-    for(unsigned day = 0; day < num_of_days-1; day++) {
+    for(unsigned day = 0; day < num_of_days; day++) {
         Clause* clause = create_new_clause(formula);
         for(unsigned i = 0; i < num_of_streets; i++) {
             add_literal_to_clause(clause, true, FIRST_PHASE_FLAG, streets[i].source, streets[i].destination, day);
@@ -221,9 +224,12 @@ void each_day_at_least_one_street_being_repaired(CNF *formula, unsigned num_of_d
 * @param streets seznam ulic
 */
 void street_between_0_and_1_repaired_in_last_two_days(CNF *formula, unsigned num_of_days, unsigned num_of_crossroads, unsigned num_of_streets, const NeighbourLists *neighbours, const Street *streets) {
-    Clause* clause = create_new_clause(formula);
-    add_literal_to_clause(clause, true, FIRST_PHASE_FLAG, 0, 1, num_of_days-2);
-    add_literal_to_clause(clause, true, SECOND_PHASE_FLAG, 0, 1, num_of_days-1);
+    if(streets[0].source == 0 && streets[0].destination == 1) {
+        Clause* clause = create_new_clause(formula);
+        add_literal_to_clause(clause, true, FIRST_PHASE_FLAG, 0, 1, num_of_days-2);
+        clause = create_new_clause(formula);
+        add_literal_to_clause(clause, true, SECOND_PHASE_FLAG, 0, 1, num_of_days-1);
+    }
 }
 
 /** Funkce vytvářející klauzule ošetřující podmínku 7 ze zadání
