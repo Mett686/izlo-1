@@ -21,7 +21,7 @@ int main (int argc, char** argv) {
     all_streets_min_one_day_of_first_phase_roadwork(&f, data.num_of_days, data.num_of_crossroads, data.num_of_streets, &data.neighbours, data.streets);
     all_streets_max_one_day_of_first_phase_roadwork(&f, data.num_of_days, data.num_of_crossroads, data.num_of_streets, &data.neighbours, data.streets);
     second_phase_follows_first_immediately(&f, data.num_of_days, data.num_of_crossroads, data.num_of_streets, &data.neighbours, data.streets);
-   neighbour_streets_not_being_repaired_simultaneously(&f, data.num_of_days, data.num_of_crossroads, data.num_of_streets, &data.neighbours, data.streets);
+    neighbour_streets_not_being_repaired_simultaneously(&f, data.num_of_days, data.num_of_crossroads, data.num_of_streets, &data.neighbours, data.streets);
     each_day_at_least_one_street_being_repaired(&f, data.num_of_days, data.num_of_crossroads, data.num_of_streets, &data.neighbours, data.streets);
     street_between_0_and_1_repaired_in_last_two_days(&f, data.num_of_days, data.num_of_crossroads, data.num_of_streets, &data.neighbours, data.streets);
     no_street_to_0_repaired_during_weekend(&f, data.num_of_days, data.num_of_crossroads, data.num_of_streets, &data.neighbours, data.streets);
